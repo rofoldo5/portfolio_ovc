@@ -25,7 +25,7 @@ Abre tu navegador en → **http://localhost:5000**
 
 | Usuario | Contraseña  |
 |---------|-------------|
-| admin   | admin123    |
+| admin   | 1234admin    |
 
 **⚠️ CAMBIA la contraseña antes de subir a internet.**
 
