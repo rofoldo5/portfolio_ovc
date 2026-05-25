@@ -102,4 +102,3 @@ export SECRET_KEY="tu-clave-secreta-aqui"
 export FLASK_ENV=production   # en producción
 ```
 
-Construido con ❤️ por Rodolfo Fernández — github.com/rofoldo5
