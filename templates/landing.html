@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodolfo Fernández — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red:     #c0392b;
+  --green:   #27ae60;
+  --yellow:  #f1c40f;
+  --dark:    #0a0a0a;
+  --light:   #e8e8e8;
+  --dim:     #555;
+  --font-vt:    'VT323', monospace;
+  --font-mono:  'IBM Plex Mono', monospace;
+  --font-serif: 'Playfair Display', serif;
+}
+
+html, body {
+  height: 100%;
+  background: #000;
+  color: var(--light);
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+/* ─── BOOT SCREEN ──────────────────────────────────────────────────── */
+#boot {
+  position: fixed; inset: 0;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 100;
+  transition: opacity 0.7s ease;
+}
+#boot.fade-out { opacity: 0; pointer-events: none; }
+
+.bios-wrap {
+  width: min(620px, 92vw);
+}
+.bios-line {
+  font-family: var(--font-vt);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  opacity: 0;
+  transition: opacity 0.05s;
+}
+.bios-line.show { opacity: 1; }
+.ok   { color: var(--green); }
+.warn { color: var(--yellow); }
+.dim  { color: var(--dim); }
+
+#bar-wrap {
+  margin-top: 1.8rem;
+  opacity: 0; transition: opacity 0.4s;
+}
+#bar-wrap.show { opacity: 1; }
+#bar-label {
+  font-family: var(--font-vt); font-size: 0.95rem;
+  color: var(--dim); margin-bottom: 5px;
+}
+#bar-bg {
+  height: 5px;
+  background: #111; border: 1px solid #222;
+}
+#bar-fill {
+  height: 100%; width: 0%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  transition: width 0.04s linear;
+}
+
+/* ─── LANDING ──────────────────────────────────────────────────────── */
+#landing {
+  position: fixed; inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  opacity: 0;
+  pointer-events: none;
+  transition: none;
+}
+#landing.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Left — imagen hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+.hero img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.15) brightness(0.65);
+}
+/* gradiente que une la imagen con el panel derecho */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  
+}
+.hero-caption {
+  position: absolute; bottom: 1.8rem; left: 1.8rem;
+  font-family: var(--font-vt); font-size: 0.95rem;
+  color: var(--dim); letter-spacing: 3px;
+  z-index: 1;
+}
+
+/* Right — contenido */
+.panel {
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3.5rem;
+  position: relative;
+  background: #000;
+}
+/* línea de acento rojo arriba */
+.panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--red) 0%, transparent 70%);
+}
+
+.sys-tag {
+  font-family: var(--font-vt);
+  font-size: 1rem; letter-spacing: 3px;
+  color: var(--green); margin-bottom: 1.4rem;
+}
+.sys-tag::before { content: '> '; color: var(--dim); }
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+  font-weight: 700; line-height: 1.05;
+  color: var(--light); margin-bottom: 0.4rem;
+}
+h1 em { font-style: italic; color: var(--red); }
+
+.tagline {
+  font-size: 0.8rem; color: var(--dim);
+  letter-spacing: 1px;
+  border-left: 2px solid var(--red);
+  padding-left: 0.9rem;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+/* ── Formulario de entrada ────────────────────────────────────────── */
+.enter-form { width: 100%; max-width: 340px; }
+
+.field-label {
+  font-family: var(--font-vt);
+  font-size: 0.95rem; color: var(--dim);
+  display: block; margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.field-label::before { content: '$ '; color: var(--green); }
+
+.name-row {
+  display: flex; gap: 0;
+  border: 1px solid #2a2a2a;
+  transition: border-color 0.2s;
+  margin-bottom: 1rem;
+}
+.name-row:focus-within { border-color: #444; }
+
+#visitor-name {
+  flex: 1;
+  background: transparent;
+  border: none; outline: none;
+  padding: 0.65rem 0.9rem;
+  color: var(--light);
+  font-family: var(--font-mono); font-size: 0.9rem;
+  caret-color: var(--green);
+}
+#visitor-name::placeholder { color: #333; }
+
+/* botón principal */
+.btn-enter {
+  font-family: var(--font-vt); font-size: 1.15rem;
+  letter-spacing: 2px;
+  padding: 0 1.4rem;
+  background: var(--red); color: #fff;
+  border: none; cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-enter:hover {
+  background: #a93226;
+  box-shadow: 0 0 18px rgba(192,57,43,0.45);
+}
+
+/* texto debajo */
+.hint {
+  font-family: var(--font-vt);
+  font-size: 0.9rem; color: var(--dim);
+  margin-top: 0; margin-bottom: 1.8rem;
+}
+
+/* separador */
+.divider {
+  display: flex; align-items: center; gap: 0.8rem;
+  margin: 0.4rem 0 1.4rem;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: #1e1e1e;
+}
+.divider span {
+  font-family: var(--font-vt); font-size: 0.85rem;
+  color: var(--dim); white-space: nowrap;
+}
+
+/* link admin */
+.admin-link {
+  font-family: var(--font-vt); font-size: 0.95rem;
+  color: var(--dim); text-decoration: none;
+  letter-spacing: 1px;
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: color 0.2s;
+  width: fit-content;
+}
+.admin-link:hover { color: var(--light); }
+
+/* bottom bar */
+.bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0.9rem 3.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid #111;
+}
+.bottom a, .bottom span {
+  font-family: var(--font-vt); font-size: 0.9rem;
+  color: var(--dim); text-decoration: none;
+  letter-spacing: 1px; transition: color 0.2s;
+}
+.bottom a:hover { color: var(--light); }
+
+/* cursor parpadeante */
+.cursor {
+  display: inline-block; width: 9px; height: 1.1em;
+  background: var(--green);
+  vertical-align: text-bottom; margin-left: 3px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ─── MOBILE ───────────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  #landing { grid-template-columns: 1fr; }
+  .hero    { display: none; }
+  .panel   { padding: 3rem 1.8rem; }
+  .bottom  { padding: 0.9rem 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ BOOT SCREEN ══════════════════════════════════════════════════ -->
+<div id="boot">
+  <div class="bios-wrap">
+    <div id="bios-output"></div>
+    <div id="bar-wrap">
+      <div id="bar-label">Cargando sistema…</div>
+      <div id="bar-bg"><div id="bar-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LANDING ══════════════════════════════════════════════════════ -->
+<div id="landing">
+
+  <!-- Imagen hero -->
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900&q=80"
+         alt="hero"
+         onerror="this.parentElement.style.background='#050505'">
+    <div class="hero-caption">SYSTEM READY<span class="cursor"></span></div>
+  </div>
+
+  <!-- Panel de contenido -->
+  <div class="panel">
+    <div class="sys-tag">PORTFOLIO_OS v1.0</div>
+
+    <h1>Rodolfo<br><em>Fernández</em></h1>
+    <p class="tagline">
+      Backend Developer · CS Engineer<br>
+      San Cristóbal, Venezuela
+    </p>
+
+    <!-- Formulario de entrada sin contraseña -->
+    <form class="enter-form" action="/entrar" method="POST">
+      <label class="field-label" for="visitor-name">¿Cómo te llamas?</label>
+
+      <div class="name-row">
+        <input
+          type="text"
+          id="visitor-name"
+          name="visitor_name"
+          placeholder="Escribe tu nombre…"
+          maxlength="40"
+          autocomplete="off"
+        >
+        <button class="btn-enter" type="submit">ENTRAR ▶</button>
+      </div>
+
+      <p class="hint">El nombre es opcional — puedes dejarlo en blanco.</p>
+    </form>
+
+    <div class="divider"><span>o si eres el dueño de esto</span></div>
+    <a class="admin-link" href="/login">⌨ &nbsp;Acceso admin</a>
+
+    <!-- Footer del panel -->
+    <div class="bottom">
+      <a href="https://github.com/rofoldo5" target="_blank">github/rofoldo5</a>
+      <span>Flask · PostgreSQL · Linux Mint</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ BOOT SCRIPT ═══════════════════════════════════════════════════ -->
+<script>
+const LINES = [
+  { t: "PortfolioOS BIOS v2.4  —  Rodolfo Fernández", c: "" },
+  { t: "CPU : Intel Core i3-10110U @ 2.10 GHz",      c: "dim" },
+  { t: "RAM : 8192 MB  [OK]",                         c: "ok" },
+  { t: "SSD : 256 GB   [OK]",                         c: "ok" },
+  { t: "Cargando kernel Flask…",                       c: "" },
+  { t: "Conectando a PostgreSQL…          [OK]",       c: "ok" },
+  { t: "Montando sistema de archivos…     [OK]",       c: "ok" },
+  { t: "Interfaz de red activada…         [OK]",       c: "ok" },
+  { t: "AVISO: sistema personal — acceso no autorizado prohibido.", c: "warn" },
+  { t: "Sistema listo.",                               c: "ok" },
+];
+
+const out    = document.getElementById("bios-output");
+const barW   = document.getElementById("bar-wrap");
+const fill   = document.getElementById("bar-fill");
+const bootEl = document.getElementById("boot");
+const landEl = document.getElementById("landing");
+let idx = 0, done = false;
+
+function nextLine() {
+  if (idx >= LINES.length) { showBar(); return; }
+  const { t, c } = LINES[idx++];
+  const el = document.createElement("div");
+  el.className = "bios-line show" + (c ? " " + c : "");
+  el.textContent = t;
+  out.appendChild(el);
+  setTimeout(nextLine, 75 + Math.random() * 65);
+}
+
+function showBar() {
+  barW.classList.add("show");
+  let pct = 0;
+  const iv = setInterval(() => {
+    pct += Math.random() * 5 + 1;
+    if (pct >= 100) { pct = 100; clearInterval(iv); finish(); }
+    fill.style.width = pct + "%";
+  }, 35);
+}
+
+function finish() {
+  if (done) return;
+  done = true;
+  setTimeout(() => {
+    bootEl.classList.add("fade-out");
+    landEl.classList.add("show");
+    // foco automático en el campo de nombre
+    setTimeout(() => document.getElementById("visitor-name").focus(), 200);
+    setTimeout(() => bootEl.remove(), 800);
+  }, 350);
+}
+
+// Saltar el boot con cualquier tecla o clic
+document.addEventListener("keydown", finish, { once: true });
+document.addEventListener("click",   finish, { once: true });
+
+nextLine();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# No subir a GitHub
+__pycache__/
+.env
+venv/
+*.pyc
+instance/
+uploads/
+.vscode/

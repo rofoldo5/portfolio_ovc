@@ -1,0 +1,12 @@
+# ── Web framework ──────────────────────────────────────────────────────────────
+flask>=3.0               # el servidor web
+
+# ── Seguridad ──────────────────────────────────────────────────────────────────
+bcrypt>=4.1              # hashea contraseñas (nunca guardes texto plano)
+flask-limiter>=3.5       # bloquea fuerza bruta en el login
+
+# ── Base de datos ──────────────────────────────────────────────────────────────
+psycopg2-binary>=2.9     # conecta Python con PostgreSQL
+
+# ── Configuración ──────────────────────────────────────────────────────────────
+python-dotenv>=1.0       # lee el archivo .env automáticamente
