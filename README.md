@@ -1,5 +1,4 @@
-# 🖥️ Portfolio Desktop — Rodolfo Fernández
-
+OVC
 Un portafolio personal en forma de escritorio virtual inspirado en entornos Linux clásicos.
 Construido con **Python + Flask + SQLite**. Listo para correr en **Linux Mint**.
 
