@@ -94,11 +94,3 @@ SECRET_KEY=una-clave-larga-y-aleatoria-aqui
 | Inkscape (iconos) | `apt install inkscape`          |
 
 ---
-
-## 🛠️ Variables de entorno
-
-```bash
-export SECRET_KEY="tu-clave-secreta-aqui"
-export FLASK_ENV=production   # en producción
-```
-
